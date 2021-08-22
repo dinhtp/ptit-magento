@@ -7,6 +7,7 @@ use Magento\Framework\Console\Cli;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Master\DataAnalytic\Model\Prediction;
 
 /**
@@ -70,6 +71,8 @@ class Trigger extends Command
 
             return Cli::RETURN_SUCCESS;
         }
+
+        $output->write(sprintf('Request Prediction For Session: %d', $sessionId), true);
 
         $result = $this->prediction->requestPrediction($sessionId);
 

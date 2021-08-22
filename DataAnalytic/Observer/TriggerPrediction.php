@@ -6,6 +6,7 @@ namespace Master\DataAnalytic\Observer;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Master\DataAnalytic\Model\Prediction;
 
 /**
  * Class TriggerPrediction
@@ -19,13 +20,21 @@ class TriggerPrediction implements ObserverInterface
     protected $checkoutSession;
 
     /**
-     * CheckoutSuccess constructor.
+     * @var Prediction
+     */
+    protected $prediction;
+
+    /**
+     * TriggerPrediction constructor.
      * @param CheckoutSession $checkoutSession
+     * @param Prediction $prediction
      */
     public function __construct(
-        CheckoutSession $checkoutSession
+        CheckoutSession $checkoutSession,
+        Prediction $prediction
     ) {
         $this->checkoutSession = $checkoutSession;
+        $this->prediction = $prediction;
 
     }
 
@@ -36,13 +45,11 @@ class TriggerPrediction implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $quoteId = (int) $this->checkoutSession->getQuoteId();
-        $sessionId = (int) $this->checkoutSession->getSaleSessionId();
+        $quoteId = (int)$this->checkoutSession->getQuoteId();
+        $sessionId = (int)$this->checkoutSession->getSaleSessionId();
 
-        if (!$quoteId || $sessionId) {
-            return;
+        if ($quoteId && $sessionId) {
+            $this->prediction->requestPrediction($sessionId);
         }
-
-
     }
 }

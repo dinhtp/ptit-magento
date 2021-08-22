@@ -11,8 +11,6 @@ use Magento\Framework\HTTP\Client\CurlFactory;
  */
 class Prediction
 {
-    const ANALYTIC_URL = 'random-forest';
-
     /**
      * @var CurlFactory
      */
@@ -34,7 +32,7 @@ class Prediction
     public function checkConnection()
     {
         $client = $this->curl->create();
-        $client->get(self::ANALYTIC_URL);
+        $client->get($this->getAnalyticServiceUrl());
 
         return [
             'status' => $client->getStatus(),
@@ -49,11 +47,21 @@ class Prediction
     public function requestPrediction($sessionId)
     {
         $client = $this->curl->create();
-        $client->post(self::ANALYTIC_URL, ['sessionId' => $sessionId]);
+        $data = json_encode(['sessionId' => $sessionId]);
+        $client->setHeaders(['Content-Type' => 'application/json', 'Content-Length' => strlen($data)]);
+        $client->post($this->getAnalyticServiceUrl(), $data);
 
         return [
             'status' => $client->getStatus(),
             'body' => $client->getBody()
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getAnalyticServiceUrl()
+    {
+        return getenv('ANALYTIC_SERVICE');
     }
 }
