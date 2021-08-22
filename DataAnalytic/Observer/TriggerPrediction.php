@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Master\DataCollector\Observer;
+namespace Master\DataAnalytic\Observer;
 
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
 /**
- * Class CheckoutSuccess
- * @package Master\DataCollector\Observer
+ * Class TriggerPrediction
+ * @package Master\DataAnalytic\Observer
  */
-class CheckoutSuccess implements ObserverInterface
+class TriggerPrediction implements ObserverInterface
 {
     /**
      * @var CheckoutSession
@@ -32,9 +32,17 @@ class CheckoutSuccess implements ObserverInterface
     /**
      * @param Observer $observer
      * @return void
+     * @throws Exception
      */
     public function execute(Observer $observer)
     {
-        $this->checkoutSession->unsSaleSessionId();
+        $quoteId = (int) $this->checkoutSession->getQuoteId();
+        $sessionId = (int) $this->checkoutSession->getSaleSessionId();
+
+        if (!$quoteId || $sessionId) {
+            return;
+        }
+
+
     }
 }
