@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="customer_import" xsi:type="object">Master\ImportExport\Console\Command\CustomerImport</item>
+                <item name="product_log_import" xsi:type="object">Master\ImportExport\Console\Command\ProductLogImport</item>
+                <item name="activity_log_import" xsi:type="object">Master\ImportExport\Console\Command\ActivityLogImport</item>
+                <item name="sale_log_import" xsi:type="object">Master\ImportExport\Console\Command\SaleLogImport</item>
+                <item name="review_log_import" xsi:type="object">Master\ImportExport\Console\Command\ReviewLogImport</item>
+                <item name="sale_session_import" xsi:type="object">Master\ImportExport\Console\Command\SaleSessionImport</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
